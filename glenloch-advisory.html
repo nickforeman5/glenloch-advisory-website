@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glenloch Advisory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Marcellus+SC&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0e2b28;        /* deep forest-petrol field */
+    --tooth:#1b463f;     /* houndstooth, a quiet step lighter */
+    --ink:#ece6d8;       /* warm off-white wordmark */
+    --brass:#b99c6c;     /* sub-line + rules */
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;margin:0;}
+  body{
+    background:var(--bg);
+    overflow:hidden;
+    font-family:"Marcellus",Georgia,serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .stage{position:fixed;inset:0;}
+
+  /* houndstooth field -------------------------------------------------- */
+  .weave{
+    position:absolute;inset:0;width:100%;height:100%;
+    opacity:0;
+    animation:fade 1.6s ease .1s forwards;
+  }
+
+  /* lighting: a soft lift at centre, a vignette at the edges ----------- */
+  .lighting{
+    position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(58% 54% at 50% 45%, rgba(150,200,170,0.12), rgba(0,0,0,0) 62%),
+      radial-gradient(125% 115% at 50% 50%, rgba(0,0,0,0) 48%, rgba(0,0,0,0.62) 100%);
+  }
+
+  /* grain texture ------------------------------------------------------ */
+  .grain{
+    position:absolute;inset:-50%;width:200%;height:200%;
+    opacity:0.045;mix-blend-mode:overlay;pointer-events:none;
+  }
+
+  /* wordmark ----------------------------------------------------------- */
+  .mark{
+    position:absolute;left:50%;top:50%;
+    transform:translate(-50%,-50%);
+    text-align:center;opacity:0;
+    animation:rise 1.8s cubic-bezier(.16,.7,.3,1) 1.0s forwards;
+  }
+  .mark::before{
+    content:"";position:absolute;left:50%;top:50%;
+    width:185%;height:360%;transform:translate(-50%,-50%);
+    background:radial-gradient(50% 50% at 50% 50%,
+      rgba(8,22,20,0.82) 0%, rgba(8,22,20,0) 68%);
+    z-index:-1;
+  }
+  .name{
+    color:var(--ink);
+    font-size:clamp(2.8rem,9vw,6.6rem);
+    line-height:1;letter-spacing:0.045em;
+    text-shadow:0 2px 34px rgba(0,0,0,.5);
+  }
+  .rulewrap{
+    display:flex;align-items:center;justify-content:center;
+    gap:clamp(.7rem,2.2vw,1.4rem);
+    margin-top:clamp(1rem,2.4vw,1.6rem);
+  }
+  .rule{height:1px;width:clamp(28px,7vw,72px);
+    background:linear-gradient(90deg,transparent,var(--brass));}
+  .rule.r{background:linear-gradient(90deg,var(--brass),transparent);}
+  .sub{
+    font-family:"Marcellus SC","Marcellus",serif;
+    color:var(--brass);
+    font-size:clamp(.72rem,1.7vw,1.05rem);
+    letter-spacing:0.42em;text-indent:0.42em;
+    text-transform:uppercase;white-space:nowrap;
+  }
+
+  @keyframes fade{to{opacity:1;}}
+  @keyframes rise{
+    from{opacity:0;transform:translate(-50%,-42%);}
+    to{opacity:1;transform:translate(-50%,-50%);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .weave,.mark{animation:none;opacity:1;}
+  }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <svg class="weave" aria-hidden="true">
+      <defs>
+        <pattern id="hound" width="64" height="64" patternUnits="userSpaceOnUse">
+          <rect width="64" height="64" fill="#0e2b28"/>
+          <path fill="#1b463f" d="M16,16 h16 v16 h-16 Z M32,16 h16 v16 h-16 Z M16,32 h16 v16 h-16 Z M32,32 h16 v16 h-16 Z M48,16 L64,32 L48,32 Z M32,0 L48,0 L32,16 Z M16,48 L0,32 L16,32 Z M16,48 L32,64 L16,64 Z"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#hound)"/>
+    </svg>
+
+    <div class="lighting"></div>
+
+    <svg class="grain" aria-hidden="true">
+      <filter id="grain">
+        <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/>
+        <feColorMatrix type="saturate" values="0"/>
+      </filter>
+      <rect width="100%" height="100%" filter="url(#grain)"/>
+    </svg>
+
+    <div class="mark">
+      <div class="name">Glenloch</div>
+      <div class="rulewrap">
+        <span class="rule"></span>
+        <span class="sub">Advisory</span>
+        <span class="rule r"></span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
